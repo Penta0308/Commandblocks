@@ -1,4 +1,4 @@
-const pushInvalid = ["commandblocks-commandb", "thorium-wall", "thorium-wall-large", "commandblocks-researchskill", "commandblocks-enderbox", "commandblocks-enderchest", "commandblocks-pistonarm", "commandblocks-wallinvi", "commandblocks-wallinvilarge"];
+const pushInvalid = ["commandblocks-commandb", "thorium-wall", "thorium-wall-large", "commandblocks-researchskill", "commandblocks-enderbox", "commandblocks-enderchest", "commandblocks-pistonarm", "commandblocks-wallinvi", "commandblocks-wallinvilarge", "commandblocks-coremainbuild"];
 var nonSticky = ["phase-wall", "phase-wall-large"];
 nonSticky = nonSticky.concat(pushInvalid);
 //const pistonArm = Blocks.copperWall;
@@ -84,15 +84,16 @@ function canBreakBlock(ptile){
 
 function canPush(ptile){
   if(ptile.block().name == "air") return true;
-  return (pushInvalid.indexOf(ptile.block().name) < 0)&&ptile.breakable()&&canBreakBlock(ptile);
+  return (pushInvalid.indexOf(ptile.block().name) < 0)&&ptile.breakable()&&canBreakBlock(ptile)&&(!(ptile.block() instanceof BuildBlock));
 }
 
 function canPushPiston(r, ptile, count){
   if(pistonBlock.indexOf(ptile.block().name)<0 || !ptile.ent().extended() || (ptile.rotation()-r+4)%4 == 2){
-    print("Cond 1:"+pistonBlock.indexOf(ptile.block().name));
-    print("Cond 3: "+(ptile.rotation()-r+4)%4);
+    //print("Cond 1:"+pistonBlock.indexOf(ptile.block().name));
+    //print("Cond 3: "+(ptile.rotation()-r+4)%4);
     return true;
   }
+  return false;
   var etile = ptile.front();
   if(etile == null) return true;
   etile = etile.getNearby(r);
@@ -105,7 +106,7 @@ function canPushPiston(r, ptile, count){
 function canStick(ptile, origTile){
   var orig = origTile.block().name;
   var slimet = slimeType(ptile.block().name);
-  return ((nonSticky.indexOf(ptile.block().name) < 0)&&ptile.breakable()&&canBreakBlock(ptile)&&(slimet == orig || slimet == ptile.block().name || ptile.front().link() != origTile)) || (ptile.block().name == slimeType(orig) && slimeBlock.indexOf(slimeType(orig))>-1);
+  return ((nonSticky.indexOf(ptile.block().name) < 0)&&ptile.breakable()&&canBreakBlock(ptile)&&(!(ptile.block() instanceof BuildBlock))&&(slimet == orig || slimet == ptile.block().name || ptile.front().link() != origTile)) || (ptile.block().name == slimeType(orig) && slimeBlock.indexOf(slimeType(orig))>-1);
 }
 
 function slimeType(name){

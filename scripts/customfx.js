@@ -2,6 +2,10 @@ var t = this;
 var shieldColor = Color.valueOf("ffd37f").a(0.7);
 const shieldInColor = Color.black.cpy().a(0);
 const spaceshader = this.global.shaders.space;
+
+const bitcolor1=Color.valueOf("00e5ff");
+const bitcolor2=Color.valueOf("ff65db");
+
 //이런 영감 아저씨
 if (typeof(floatc2)== "undefined"){
   const floatc2 = method => new Floatc2(){get : method};
@@ -267,5 +271,67 @@ this.global.fx = {
     Lines.poly(e.x, e.y, rand*5+10, e.fin()*e.rotation, e.fout()*300);
     Lines.stroke(e.fout()*2);
     Lines.poly(e.x, e.y, rand*5+10, e.fin()*e.rotation*0.85, e.fout()*300);
+  }),
+  ballBounce : newEffect(30, e => {
+    var v1 = Vec2(e.fin()*24, 0).setAngle(e.rotation+Mathf.randomSeed(e.id, 165, 195));
+    Draw.alpha(e.fout());
+    Draw.rect("commandblocks-b-ball-back", e.x+v1.x, e.y+v1.y, e.fin()*80);
+    Draw.rect("commandblocks-b-ball", e.x+v1.x, e.y+v1.y);
+  }),
+  coreMainSquare : newEffectSize(90, 450, e => {
+    Lines.stroke(15*e.fout());
+    Draw.color(bitcolor1, bitcolor2, e.fin());
+    Lines.square(e.x, e.y, e.finpow()*210+12, e.finpow()*135);
+  }),
+  coreMainSpark : newEffectSize(150, 800, e => {
+    Draw.color(bitcolor1, bitcolor2, e.fout());
+    drawSpark(e.x, e.y, e.fin()*700+40, e.fout()*54, (1-e.finpow())*215);
+  }),
+  coreMainPhase : newEffectSize(90, 70, e => {
+    Draw.color(bitcolor1, bitcolor2, e.fin());
+
+    Lines.stroke(Math.max(6*e.fout()-3, 0));
+    Lines.square(e.x, e.y, 12);
+
+    Angles.randLenVectors(e.id+1, 7, 90*e.finpow()+12, floatc2((x,y) => {
+      Fill.square(e.x+x, e.y+y, e.fout()*3, 45);
+    }));
+
+    Draw.color(bitcolor1, bitcolor2, e.fout());
+    Angles.randLenVectors(e.id, 7, 90*e.finpow()+12, floatc2((x,y) => {
+      Fill.square(e.x+x, e.y+y, e.fout()*3, 45);
+    }));
+  }),
+  bittriumCenter : newEffect(300, e => {
+    var size = Mathf.sin(Time.time()*0.1)*0.5 + 3;
+    Draw.color(bitcolor1, bitcolor2, Mathf.sin(Time.time()*0.041));
+    Draw.alpha(e.fout()*5);
+    Fill.square(e.x, e.y, size, 45);
+    Draw.color();
+    Draw.alpha(e.fout()*2);
+    Fill.square(e.x, e.y, size-1, 45);
+  }),
+  bittriumSquare : newEffect(90, e => {
+    Lines.stroke(e.fout()*2);
+    Draw.shader(t.global.shaders.bittrium);
+    Lines.square(e.x, e.y, e.finpow()*8, e.finpow()*45+45);
+    Draw.shader();
+  }),
+  bittriumCharge : newEffect(30, e => {
+    Draw.color(bitcolor1, bitcolor2, Mathf.sin(Time.time()*0.041));
+    Angles.randLenVectors(e.id, 1, 20*e.fout(), floatc2((x,y) => {
+      Fill.circle(e.x+x, e.y+y, e.finpow()*1.5);
+    }));
+  }),
+  placeOre : newEffect(30, e => {
+    Draw.color(e.color);
+    Lines.stroke(e.fout()*4);
+    Lines.square(e.x, e.y, e.fin()*2+3);
+  }),
+  shine : newEffect(30, e => {
+    Draw.color(Color.white, e.color, e.finpow());
+    drawSpark(e.x, e.y, e.fout()*2, e.finpow()*15, 0);
+    Lines.stroke(e.fout());
+    Lines.circle(e.x, e.y, e.finpow()*5);
   })
 };

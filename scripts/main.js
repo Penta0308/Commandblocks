@@ -18,10 +18,14 @@ require("command");
 
 //CAMPAIGN
 require("campaign/ores");
+require("campaign/coremain");
+require("campaign/campfire");
+require("campaign/bitcrystal");
+require("campaign/crafters");
+require("campaign/turrets");
 require("campaign/explosive");
 require("campaign/explosivelarge");
 require("campaign/loader");
-require("campaign/campfire");
 require("campaign/enderchest");
 require("campaign/enderbox");
 
@@ -76,6 +80,7 @@ require("powertrans");
 require("setconv");
 require("setconva");
 require("setconvmodder");
+require("bundle-lib");
 
 //PISTONS
 require("piston");
